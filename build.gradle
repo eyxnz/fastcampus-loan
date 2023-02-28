@@ -29,6 +29,19 @@ dependencies {
 
     // Spring Boot Devtools
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
+    // Spring Data JPA
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+    // MySQL
+    runtimeOnly 'mysql:mysql-connector-java'
+
+    // H2
+    compileOnly 'com.h2database:h2'
+
+    // ModelMapper : 서로 다른 클래스의 값을 한 번에 복사하게 도와주는 라이브러리
+    // ex. Dto 로 받은 데이터를 원하는 Entity 로 넣어줄 때, 매핑해야하는 필드가 다를 경우 사용
+    implementation 'org.modelmapper:modelmapper:3.1.0'
 }
 
 tasks.named('test') {
