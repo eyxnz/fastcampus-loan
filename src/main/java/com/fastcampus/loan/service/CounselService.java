@@ -2,6 +2,8 @@ package com.fastcampus.loan.service;
 
 import com.fastcampus.loan.domain.Counsel;
 import com.fastcampus.loan.dto.CounselDTO;
+import com.fastcampus.loan.exception.BaseException;
+import com.fastcampus.loan.exception.ResultType;
 import com.fastcampus.loan.repository.CounselRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -23,5 +25,15 @@ public class CounselService {
         Counsel created = counselRepository.save(counsel);
 
         return modelMapper.map(created, CounselDTO.Response.class);
+    }
+
+    // 대출 상담 조회
+    public CounselDTO.Response get(Long counselId) {
+        Counsel counsel = counselRepository.findById(counselId)
+                .orElseThrow(() -> {
+                    throw new BaseException(ResultType.SYSTEM_ERROR);
+                });
+
+        return modelMapper.map(counsel, CounselDTO.Response.class);
     }
 }
