@@ -63,4 +63,16 @@ public class CounselService {
     }
 
     // 대출 상담 삭제
+    @Transactional
+    public void delete(Long counselId) {
+        Counsel counsel = counselRepository.findById(counselId)
+                .orElseThrow(() -> {
+                    throw new BaseException(ResultType.SYSTEM_ERROR);
+                });
+
+        // soft delete
+        counsel.setIsDeleted(true);
+
+        counselRepository.save(counsel);
+    }
 }

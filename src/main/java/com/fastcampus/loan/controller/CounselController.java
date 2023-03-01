@@ -34,4 +34,10 @@ public class CounselController extends AbstractController {
     }
 
     // 대출 상담 삭제
+    @DeleteMapping("/{counselId}")
+    public ResponseDTO<Void> delete(@PathVariable Long counselId) {
+        counselService.delete(counselId);
+
+        return ok();
+    }
 }
