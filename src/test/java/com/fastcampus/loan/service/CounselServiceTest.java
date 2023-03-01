@@ -126,4 +126,27 @@ class CounselServiceTest {
         assertThat(actual.getName())
                 .isSameAs(request.getName());
     }
+
+    @DisplayName("존재하는 상담 Id 를 입력으로 넣으면 해당 Entity 의 isDeleted 를 true 로 변환한다.")
+    @Test
+    void givenExistCounselId_whenRequestDeleteExistCounselInfo_thenSetIsDeletedTrue() {
+        // Given
+        Long targetId = 1L;
+
+        Counsel entity = Counsel.builder()
+                .counselId(1L)
+                .build();
+
+        when(counselRepository.save(ArgumentMatchers.any(Counsel.class)))
+                .thenReturn(entity);
+        when(counselRepository.findById(targetId))
+                .thenReturn(Optional.ofNullable(entity));
+
+        // When
+        counselService.delete(targetId);
+
+        // Then
+        assertThat(entity.getIsDeleted())
+                .isSameAs(true);
+    }
 }
