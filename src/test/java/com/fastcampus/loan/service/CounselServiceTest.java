@@ -28,7 +28,7 @@ class CounselServiceTest {
     @Mock private CounselRepository counselRepository;
     @Spy private ModelMapper modelMapper;
 
-    @DisplayName("새로운 상담 Entity Request 를 입력으로 넣으면 해당 상담 Entity 의 Response 를 반환한다.")
+    @DisplayName("새로운 상담 Request 를 입력으로 넣으면 해당 상담 Entity 의 Response 를 반환한다.")
     @Test
     void givenRequestOfNewCounselEntity_whenRequestCounsel_thenReturnResponseOfNewCounselEntity() {
         // Given
@@ -95,5 +95,35 @@ class CounselServiceTest {
 
         // When & Then
         assertThrows(BaseException.class, () -> counselService.get(findId));
+    }
+
+    @DisplayName("존재하는 상담 Id 와 수정할 Request 를 입력으로 넣으면 수정된 Response 를 반환한다.")
+    @Test
+    void givenExistCounselIdAndRequestOfCounselEntity_whenRequestUpdateExistCounselInfo_thenReturnUpdateResponseOfExistCounselEntity() {
+        // Given
+        Long findId = 1L;
+
+        Counsel entity = Counsel.builder()
+                .counselId(1L)
+                .name("Member Kim")
+                .build();
+
+        CounselDTO.Request request = CounselDTO.Request.builder()
+                .name("Member Kang")
+                .build();
+
+        when(counselRepository.save(ArgumentMatchers.any(Counsel.class)))
+                .thenReturn(entity);
+        when(counselRepository.findById(findId))
+                .thenReturn(Optional.ofNullable(entity));
+
+        // When
+        CounselDTO.Response actual = counselService.update(findId, request);
+
+        // Then
+        assertThat(actual.getCounselId())
+                .isSameAs(findId);
+        assertThat(actual.getName())
+                .isSameAs(request.getName());
     }
 }
